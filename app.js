@@ -116,6 +116,7 @@ function fetchData() {
       return response.json();
     })
     .then((data) => {
+      data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       // Assuming data is an array of members
       originalData = data;
       getData = [...originalData];
@@ -438,6 +439,7 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const information = {
+    createAt: new Date().toISOString(),
     picture: imgInput.src === undefined ? "./img/pic1.png" : imgInput.src,
     fName: fName.value,
     lName: lName.value,
