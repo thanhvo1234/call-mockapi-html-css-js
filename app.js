@@ -116,7 +116,7 @@ function fetchData() {
       return response.json();
     })
     .then((data) => {
-      data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      data.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
       // Assuming data is an array of members
       originalData = data;
       getData = [...originalData];
@@ -289,8 +289,41 @@ function showInfo() {
       }
     }
   } else {
-    userInfo.innerHTML = `<tr class="employeeDetails"><td class="empty" colspan="11" align="center">No data available in table</td></tr>`;
-    table.style.minWidth = "1400px";
+    function showLoadingInTable() {
+      userInfo.innerHTML = `
+        <tr class="employeeDetails">
+          <td class="empty" colspan="11" align="center">
+            <div class="loading-spinner"></div>
+          </td>
+        </tr>
+      `;
+
+      // Đảm bảo kích thước bảng như ban đầu
+      table.style.minWidth = "1400px";
+    }
+
+    // CSS động cho spinner
+    const style = document.createElement("style");
+    style.innerHTML = `
+      .loading-spinner {
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+    
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Gọi hàm khi cần hiển thị spinner
+    showLoadingInTable();
   }
 }
 
